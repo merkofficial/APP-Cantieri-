@@ -22,6 +22,7 @@
             --excel-green: #107c41;
             --info-blue: #2196f3;
             --cal-orange: #ff9800;
+            --rem-purple: #bf5af2;
         }
 
         * {
@@ -103,10 +104,15 @@
         .job-worker.completed-worker { color: var(--text-white); background-color: #123819; border-color: var(--done-green); }
 
         .job-actions { display: flex; flex-wrap: wrap; gap: 8px; }
-        .btn-action { background-color: transparent; padding: 8px 12px; border-radius: 6px; font-size: 12px; font-weight: 700; text-transform: uppercase; }
+        .btn-action { background-color: transparent; padding: 8px 12px; border-radius: 6px; font-size: 11px; font-weight: 800; text-transform: uppercase; }
         .btn-done { border: 1px solid var(--lime-fluo); color: var(--lime-fluo); }
+        
         .btn-cal { border: 1px solid var(--cal-orange); color: var(--cal-orange); }
         .btn-cal:hover { background-color: var(--cal-orange); color: #000; }
+        
+        .btn-rem { border: 1px solid var(--rem-purple); color: var(--rem-purple); }
+        .btn-rem:hover { background-color: var(--rem-purple); color: #fff; }
+
         .btn-edit { border: 1px solid var(--info-blue); color: var(--info-blue); }
         .btn-delete { border: 1px solid var(--danger-red); color: var(--danger-red); }
 
@@ -276,13 +282,12 @@
     }
 
     // =========================================================================
-    // --- IL PONTE CALENDARIO NATIVO (.ICS) CHE SVEGLIA IL TELEFONO ---
+    // 1. MOTORE CALENDARIO NATIVO (.ICS)
     // =========================================================================
     window.triggerNativeCalendar = function(job) {
         const cleanDate = job.date.replace(/-/g, '');
         const cleanTime = (job.time || '08:30').replace(':', '');
         const dtStart = `${cleanDate}T${cleanTime}00`;
-        
         let [h, m] = (job.time || '08:30').split(':').map(Number);
         const dtEnd = `${cleanDate}T${String((h + 2) % 24).padStart(2, '0')}${String(m).padStart(2, '0')}00`;
 
@@ -290,41 +295,51 @@
         const safeMat = (job.materials || 'Nessuno').replace(/\r?\n/g, ' - ');
 
         const icsContent = [
-            "BEGIN:VCALENDAR",
-            "VERSION:2.0",
-            "PRODID:-//Cantieri Cloud//App//IT",
-            "BEGIN:VEVENT",
-            `SUMMARY:👷 Cantiere: ${job.client}`,
+            "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Cantieri Cloud//App//IT",
+            "BEGIN:VEVENT", `SUMMARY:👷 Cantiere: ${job.client}`,
             `DESCRIPTION:LAVORO: ${safeDesc}\\nMATERIALI: ${safeMat}\\nTEL: ${job.phone || '-'}`,
-            `LOCATION:${job.address}`,
-            `DTSTART:${dtStart}`,
-            `DTEND:${dtEnd}`,
-            "BEGIN:VALARM",
-            "TRIGGER:-PT24H",
-            "ACTION:DISPLAY",
-            "DESCRIPTION:Promemoria Cantiere Domani",
-            "END:VALARM",
-            "BEGIN:VALARM",
-            "TRIGGER:-PT3H",
-            "ACTION:DISPLAY",
-            "DESCRIPTION:Intervento tra 3 ore",
-            "END:VALARM",
-            "END:VEVENT",
-            "END:VCALENDAR"
+            `LOCATION:${job.address}`, `DTSTART:${dtStart}`, `DTEND:${dtEnd}`,
+            "BEGIN:VALARM", "TRIGGER:-PT24H", "ACTION:DISPLAY", "DESCRIPTION:Promemoria Domani", "END:VALARM",
+            "BEGIN:VALARM", "TRIGGER:-PT3H", "ACTION:DISPLAY", "DESCRIPTION:Tra 3 ore", "END:VALARM",
+            "END:VEVENT", "END:VCALENDAR"
         ].join("\r\n");
 
         const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
         const link = document.createElement('a');
         link.href = window.URL.createObjectURL(blob);
         link.setAttribute('download', `Cantiere_${job.client.replace(/[^a-zA-Z0-9]/g, '_')}.ics`);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        document.body.appendChild(link); link.click(); document.body.removeChild(link);
     };
 
     window.triggerNativeCalendarById = function(id) {
-        const j = jobsList.find(x => x.id === id);
-        if(j) triggerNativeCalendar(j);
+        const j = jobsList.find(x => x.id === id); if(j) triggerNativeCalendar(j);
+    };
+
+    // =========================================================================
+    // 2. MOTORE PROMEMORIA APPLE (Sfrutta il Condividi di iOS + IA Siri)
+    // =========================================================================
+    window.triggerAppleReminders = async function(job) {
+        const [y, m, d] = job.date.split('-');
+        const dataItaliana = `${d}/${m}/${y}`;
+        const oraStr = job.time || '08:30';
+
+        const titoloRem = `👷 ${job.client}`;
+        const noteRem = `Scadenza il ${dataItaliana} alle ore ${oraStr}\n📍 ${job.address}\n📞 ${job.phone || 'No Tel'}\n📝 ${job.desc}`;
+
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: titoloRem,
+                    text: `${titoloRem}\n\n${noteRem}`
+                });
+            } catch (err) { console.log("Condivisione annullata"); }
+        } else {
+            alert("⚠️ Il pulsante Promemoria funziona solo aprendo l'app da Smartphone!");
+        }
+    };
+
+    window.triggerAppleRemindersById = function(id) {
+        const j = jobsList.find(x => x.id === id); if(j) triggerAppleReminders(j);
     };
     // =========================================================================
 
@@ -338,8 +353,7 @@
                 jobsList = jobsRow ? JSON.parse(jobsRow.value) : [];
                 savedClients = clientsRow ? JSON.parse(clientsRow.value) : {};
             }
-            renderJobs();
-            renderClientsDatalist();
+            renderJobs(); renderClientsDatalist();
         } catch(err) { console.error(err); }
     }
 
@@ -352,11 +366,8 @@
     }
 
     function renderClientsDatalist() {
-        const list = document.getElementById('clientsList');
-        list.innerHTML = '';
-        Object.keys(savedClients).sort().forEach(c => {
-            const opt = document.createElement('option'); opt.value = c; list.appendChild(opt);
-        });
+        const list = document.getElementById('clientsList'); list.innerHTML = '';
+        Object.keys(savedClients).sort().forEach(c => { const opt = document.createElement('option'); opt.value = c; list.appendChild(opt); });
     }
 
     document.getElementById('client').addEventListener('input', function() {
@@ -439,7 +450,8 @@
                         ${!isCompleted ? `
                             <button class="btn-action btn-done" onclick="openAccountingModal(${job.id})">Chiudi ✔</button>
                             <button class="btn-action btn-cal" onclick="triggerNativeCalendarById(${job.id})">📅 Calendario</button>
-                            <button class="btn-action btn-edit" onclick="editScheduledJob(${job.id})">Modifica ✏️</button>
+                            <button class="btn-action btn-rem" onclick="triggerAppleRemindersById(${job.id})">🔔 Promemoria</button>
+                            <button class="btn-action btn-edit" onclick="editScheduledJob(${job.id})">✏️</button>
                         ` : `<button class="btn-action btn-edit" onclick="openAccountingModal(${job.id})">Modifica ✏️</button>`}
                         <button class="btn-action btn-delete" onclick="deleteJob(${job.id})">Elimina</button>
                     </div>
@@ -449,8 +461,7 @@
     }
 
     window.editScheduledJob = function(id) {
-        const job = jobsList.find(j => j.id === id);
-        if(!job) return;
+        const job = jobsList.find(j => j.id === id); if(!job) return;
         editingJobId = id;
         document.getElementById('formSectionTitle').innerText = "Modifica Appuntamento";
         document.getElementById('editBanner').style.display = 'flex';
@@ -466,7 +477,6 @@
         document.getElementById('time').value = job.time || '08:30';
 
         document.querySelectorAll('input[name="workers"]').forEach(cb => cb.checked = job.workers && job.workers.includes(cb.value));
-
         const sub = document.querySelector('#jobForm button[type="submit"]');
         sub.innerText = "💾 AGGIORNA INTERVENTO"; sub.style.backgroundColor = "var(--info-blue)"; sub.style.color = "#fff";
         document.getElementById('formSectionTitle').scrollIntoView({ behavior: 'smooth' });
@@ -513,8 +523,14 @@
         renderJobs(); renderClientsDatalist();
         await saveCloudData();
 
-        // SCATTA AUTOMATICAMENTE IL DOWNLOAD DEL CALENDARIO NATIVO ALLA FINE DEL SALVATAGGIO!
-        if(currentJobObj) triggerNativeCalendar(currentJobObj);
+        // SE SEI SU iPHONE SCATTA PROMEMORIA, SE SEI SU PC SCARICA IL CALENDARIO!
+        if(currentJobObj) {
+            if (navigator.share) {
+                triggerAppleReminders(currentJobObj);
+            } else {
+                triggerNativeCalendar(currentJobObj);
+            }
+        }
     });
 
     window.openAccountingModal = function(id) {

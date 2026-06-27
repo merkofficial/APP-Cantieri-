@@ -6,14 +6,17 @@
     <title>Gestione Interventi ed Economia Cantieri CLOUD</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
         :root {
-            --bg-black: #121212;
-            --bg-card: #1e1e1e;
-            --bg-input: #2d2d2d;
+            --bg-black: #0d0d0d;
+            --bg-card: #161616;
+            --bg-input: #0f0f0f;
+            --border-color: #242424;
             --text-white: #ffffff;
-            --text-gray: #aaaaaa;
+            --text-muted: #8a939b;
             --lime-fluo: #ccff00;
-            --lime-hover: #b3e600;
+            --lime-hover: #b8e600;
             --danger-red: #ff4444;
             --done-green: #00e676;
             --excel-green: #107c41;
@@ -24,13 +27,15 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            -webkit-font-smoothing: antialiased;
         }
 
         body {
             background-color: var(--bg-black);
             color: var(--text-white);
-            padding: 20px;
+            padding: 24px 16px;
+            min-height: 100vh;
         }
 
         .container {
@@ -39,99 +44,133 @@
             display: none;
         }
 
-        #loginScreen {
-            max-width: 400px;
-            margin: 100px auto 0 auto;
+        /* --- STILE HERO & BRANDING --- */
+        .brand-header {
             text-align: center;
+            margin-bottom: 32px;
         }
 
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-            border-bottom: 2px solid var(--lime-fluo);
-            padding-bottom: 15px;
-        }
-
-        header h1 {
-            font-size: 24px;
-            text-transform: uppercase;
+        .brand-logo {
+            font-size: 32px;
+            font-weight: 800;
             letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 4px;
         }
 
-        header span {
+        .logo-accent {
             color: var(--lime-fluo);
         }
 
+        .logo-white {
+            color: var(--text-white);
+        }
+
+        .brand-subtitle {
+            color: #7a838c;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* --- CARDS & MODULI --- */
         .card {
             background-color: var(--bg-card);
-            border: 1px solid #333;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+
+        #loginScreen {
+            max-width: 420px;
+            margin: 80px auto 0 auto;
+            text-align: center;
         }
 
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            text-align: left;
         }
 
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 15px;
+            gap: 16px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        @media (max-width: 600px) {
+            .form-row { grid-template-columns: 1fr; }
         }
 
         label {
             display: block;
-            margin-bottom: 5px;
-            color: var(--text-gray);
-            font-size: 14px;
+            margin-bottom: 8px;
+            color: var(--text-muted);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
         }
 
         input, textarea, select {
             width: 100%;
-            padding: 10px;
+            padding: 14px 16px;
             background-color: var(--bg-input);
-            border: 1px solid #444;
-            border-radius: 5px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
             color: var(--text-white);
-            font-size: 16px;
+            font-size: 15px;
+            font-weight: 500;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: #4a525a;
         }
 
         input:focus, textarea:focus, select:focus {
             outline: none;
             border-color: var(--lime-fluo);
+            box-shadow: 0 0 0 3px rgba(204, 255, 0, 0.12);
         }
 
+        /* --- CHECKBOX SQUADRA --- */
         .workers-checkbox-list {
             background-color: var(--bg-input);
-            border: 1px solid #444;
-            border-radius: 5px;
-            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 12px;
         }
 
         .worker-option {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             cursor: pointer;
-            color: var(--text-white);
-            font-size: 16px;
+            color: #e0e0e0;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: none;
+            letter-spacing: 0;
         }
 
         .worker-option input[type="checkbox"] {
-            width: auto;
+            width: 18px;
+            height: 18px;
+            accent-color: var(--lime-fluo);
             cursor: pointer;
-            transform: scale(1.2);
         }
 
+        /* --- BOTTONI PRINCIPALI --- */
         button {
             cursor: pointer;
-            transition: background 0.2s, transform 0.1s;
-            font-weight: bold;
+            transition: all 0.2s ease;
         }
 
         button:active {
@@ -140,167 +179,201 @@
 
         .btn-primary {
             width: 100%;
-            padding: 12px;
+            padding: 16px;
             background-color: var(--lime-fluo);
             border: none;
-            border-radius: 5px;
-            color: #000;
-            font-size: 16px;
+            border-radius: 8px;
+            color: #000000;
+            font-size: 15px;
+            font-weight: 800;
+            letter-spacing: 1px;
             text-transform: uppercase;
+            box-shadow: 0 4px 20px rgba(204, 255, 0, 0.15);
         }
 
-        .btn-primary:hover { background-color: var(--lime-hover); }
+        .btn-primary:hover { 
+            background-color: var(--lime-hover); 
+            box-shadow: 0 6px 25px rgba(204, 255, 0, 0.25);
+        }
 
         .btn-excel {
             width: 100%;
-            padding: 14px;
+            padding: 16px;
             background-color: var(--excel-green);
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             color: white;
-            font-size: 16px;
+            font-size: 15px;
+            font-weight: 700;
             text-transform: uppercase;
-            margin-top: 15px;
+            margin-top: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
         }
 
-        .btn-excel:hover { background-color: #185a37; }
+        .btn-excel:hover { background-color: #156937; }
 
+        /* --- TITOLI SEZIONI --- */
         .section-title {
-            font-size: 18px;
-            margin: 25px 0 15px 0;
+            font-size: 14px;
+            font-weight: 800;
+            margin: 36px 0 16px 0;
             color: var(--lime-fluo);
             text-transform: uppercase;
-            border-left: 3px solid var(--lime-fluo);
-            padding-left: 8px;
+            letter-spacing: 1.2px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
+        .section-title::before {
+            content: "";
+            display: inline-block;
+            width: 6px;
+            height: 16px;
+            background-color: var(--lime-fluo);
+            border-radius: 2px;
+        }
+
+        /* --- SCHEDE LAVORI IN ARCHIVIO --- */
         .job-card {
             background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
             border-left: 4px solid var(--lime-fluo);
-            border-radius: 0 8px 8px 0;
-            padding: 15px;
-            margin-bottom: 15px;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
         }
 
-        .job-card.completed { border-left-color: var(--done-green); }
+        .job-card.completed { 
+            border-left-color: var(--done-green); 
+            opacity: 0.9;
+        }
 
         .job-header {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 10px;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            gap: 10px;
         }
 
-        .job-client { font-weight: bold; font-size: 18px; }
-        .job-date { color: var(--text-gray); font-size: 14px; }
+        .job-client { font-weight: 700; font-size: 18px; color: var(--text-white); }
+        .job-date { color: var(--lime-fluo); font-size: 13px; font-weight: 700; background: rgba(204,255,0,0.08); padding: 4px 10px; border-radius: 6px; white-space: nowrap; }
+        .job-card.completed .job-date { color: var(--done-green); background: rgba(0,230,118,0.08); }
 
         .job-details {
-            font-size: 14px;
-            color: var(--text-gray);
-            margin-bottom: 10px;
-            background-color: rgba(255, 255, 255, 0.03);
-            padding: 8px;
-            border-radius: 4px;
+            font-size: 13px;
+            color: #a0a8b0;
+            margin-bottom: 14px;
+            background-color: var(--bg-input);
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.03);
         }
 
         .job-details div {
-            margin-bottom: 4px;
+            margin-bottom: 6px;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
         }
+        .job-details div:last-child { margin-bottom: 0; }
 
         .maps-link, .tel-link {
             color: var(--lime-fluo);
             text-decoration: none;
-            border-bottom: 1px dashed var(--lime-fluo);
+            font-weight: 600;
         }
+        .maps-link:hover, .tel-link:hover { text-decoration: underline; }
 
-        .tel-link { font-weight: bold; }
-
-        .job-desc { color: #e0e0e0; margin-bottom: 10px; font-size: 15px; white-space: pre-line; }
+        .job-desc { color: #d5dce2; margin-bottom: 16px; font-size: 15px; line-height: 1.5; white-space: pre-line; font-weight: 400; }
 
         .job-materials {
-            background-color: rgba(204, 255, 0, 0.05);
-            border: 1px dashed rgba(204, 255, 0, 0.2);
-            padding: 8px 12px;
-            border-radius: 5px;
-            margin-bottom: 15px;
-            font-size: 14px;
+            background-color: rgba(204, 255, 0, 0.04);
+            border: 1px dashed rgba(204, 255, 0, 0.25);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-size: 13px;
         }
         
         .job-card.completed .job-materials {
-            background-color: rgba(0, 230, 118, 0.05);
-            border-color: rgba(0, 230, 118, 0.2);
+            background-color: rgba(0, 230, 118, 0.04);
+            border-color: rgba(0, 230, 118, 0.25);
         }
 
         .materials-title {
-            font-size: 12px;
+            font-size: 11px;
             text-transform: uppercase;
             color: var(--lime-fluo);
-            font-weight: bold;
-            margin-bottom: 4px;
+            font-weight: 800;
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
         }
+        .job-card.completed .materials-title { color: var(--done-green); }
 
         .economic-box {
-            background: #252525;
-            border: 1px solid #444;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 15px;
-            font-size: 14px;
+            background: #101010;
+            border: 1px solid #282828;
+            padding: 14px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-size: 13px;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            gap: 12px;
         }
 
         .total-highlight {
             grid-column: span 2;
-            border-top: 1px solid #555;
-            padding-top: 5px;
-            font-size: 16px;
+            border-top: 1px dashed #333;
+            padding-top: 10px;
+            font-size: 15px;
             color: var(--done-green);
-            font-weight: bold;
+            font-weight: 800;
         }
 
         .job-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-top: 1px solid #333;
-            padding-top: 10px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 14px;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 12px;
         }
 
         .workers-container { display: flex; flex-wrap: wrap; gap: 6px; }
 
         .job-worker {
-            background-color: #2d2d2d;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 13px;
+            background-color: var(--bg-input);
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
             color: var(--lime-fluo);
             border: 1px solid rgba(204, 255, 0, 0.2);
         }
 
         .job-worker.completed-worker {
-            color: #fff;
-            background-color: #1b5e20;
+            color: var(--text-white);
+            background-color: #123819;
             border-color: var(--done-green);
         }
 
-        .job-actions { display: flex; gap: 6px; }
+        .job-actions { display: flex; gap: 8px; }
 
         .btn-action {
             background-color: transparent;
-            padding: 6px 10px;
-            border-radius: 4px;
-            font-size: 13px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .btn-done { border: 1px solid var(--lime-fluo); color: var(--lime-fluo); }
@@ -310,24 +383,29 @@
         .btn-delete { border: 1px solid var(--danger-red); color: var(--danger-red); }
         .btn-delete:hover { background-color: var(--danger-red); color: #fff; }
 
+        /* --- CLOUD STATUS TOAST --- */
         #cloudStatus {
             position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 12px 24px;
-            border-radius: 5px;
+            top: 24px;
+            right: 24px;
+            padding: 14px 24px;
+            border-radius: 8px;
             color: #000;
-            font-weight: bold;
-            font-size: 14px;
+            font-weight: 800;
+            font-size: 13px;
             z-index: 2000;
             display: none;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
         }
 
+        /* --- MODALE ACCOUNTING --- */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85);
+            background: rgba(0,0,0,0.88);
+            backdrop-filter: blur(5px);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -335,44 +413,48 @@
             visibility: hidden;
             opacity: 0;
             transition: opacity 0.2s, visibility 0.2s;
-            padding: 10px;
+            padding: 16px;
         }
 
         .modal-overlay.active { visibility: visible; opacity: 1; }
 
         .modal-box {
-            background: #1e1e1e;
-            border: 2px solid var(--lime-fluo);
-            border-radius: 8px;
+            background: var(--bg-card);
+            border: 1px solid var(--lime-fluo);
+            border-radius: 16px;
             width: 100%;
             max-width: 650px;
             max-height: 90vh;
             overflow-y: auto;
-            padding: 20px;
+            padding: 28px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
         }
 
         .modal-title {
             font-size: 18px;
+            font-weight: 800;
             color: var(--lime-fluo);
             text-transform: uppercase;
-            margin-bottom: 15px;
-            border-bottom: 1px solid #333;
-            padding-bottom: 10px;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 14px;
         }
 
         .modal-section-title {
-            font-size: 14px;
-            color: var(--text-gray);
+            font-size: 12px;
+            color: var(--text-muted);
             text-transform: uppercase;
-            margin: 15px 0 8px 0;
-            font-weight: bold;
+            letter-spacing: 1px;
+            margin: 20px 0 10px 0;
+            font-weight: 800;
         }
 
         .material-row-input {
             display: grid;
-            grid-template-columns: 70px 1fr 100px 40px;
+            grid-template-columns: 70px 1fr 100px 42px;
             gap: 8px;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             align-items: center;
         }
 
@@ -380,42 +462,46 @@
             background: transparent;
             border: 1px dashed var(--lime-fluo);
             color: var(--lime-fluo);
-            padding: 8px;
+            padding: 10px;
             width: 100%;
-            border-radius: 4px;
-            margin-top: 5px;
+            border-radius: 8px;
+            margin-top: 8px;
+            font-size: 13px;
+            font-weight: 700;
             text-transform: uppercase;
         }
+        .btn-add-row:hover { background: rgba(204,255,0,0.06); }
 
         .btn-del-row {
             background: transparent;
             border: 1px solid var(--danger-red);
             color: var(--danger-red);
-            border-radius: 4px;
-            height: 38px;
+            border-radius: 8px;
+            height: 46px;
+            font-weight: bold;
         }
         .btn-del-row:hover { background: var(--danger-red); color: white; }
 
         .modal-footer-btns {
             display: flex;
             justify-content: flex-end;
-            gap: 10px;
-            margin-top: 25px;
-            border-top: 1px solid #333;
-            padding-top: 15px;
+            gap: 12px;
+            margin-top: 32px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
         }
 
-        .btn-modal-save { background: var(--done-green); color: black; border: none; padding: 10px 20px; border-radius: 4px; }
-        .btn-modal-cancel { background: #444; color: white; border: none; padding: 10px 20px; border-radius: 4px; }
+        .btn-modal-save { background: var(--done-green); color: black; font-weight: 800; text-transform: uppercase; font-size: 13px; border: none; padding: 12px 24px; border-radius: 8px; }
+        .btn-modal-cancel { background: #2c2c2c; color: white; font-weight: 700; text-transform: uppercase; font-size: 13px; border: none; padding: 12px 24px; border-radius: 8px; }
 
         .empty-state {
             text-align: center;
-            color: var(--text-gray);
-            padding: 20px;
-            font-style: italic;
+            color: var(--text-muted);
+            padding: 32px 20px;
+            font-size: 14px;
             background: var(--bg-card);
-            border-radius: 8px;
-            border: 1px dashed #444;
+            border-radius: 12px;
+            border: 1px dashed var(--border-color);
         }
     </style>
 </head>
@@ -423,18 +509,27 @@
 
 <div id="cloudStatus"></div>
 
+<!-- ================= SCHERMATA DI LOGIN ================= -->
 <div id="loginScreen" class="card">
-    <h2 style="color:var(--lime-fluo); margin-bottom:15px; text-transform:uppercase;">⚡ Accesso Registro</h2>
-    <div class="form-group">
-        <input type="password" id="appPassword" placeholder="Inserisci Password" style="text-align:center;">
+    <div class="brand-header" style="margin-bottom: 24px;">
+        <div class="brand-logo"><span class="logo-accent">CANTIERI</span><span class="logo-white">CLOUD</span></div>
+        <p class="brand-subtitle">Area Riservata • Gestione Cantieri</p>
     </div>
-    <button class="btn-primary" onclick="checkLogin()">Entra</button>
+
+    <div class="form-group">
+        <label for="appPassword">PIN DI ACCESSO</label>
+        <input type="password" id="appPassword" placeholder="Inserisci PIN" style="text-align:center; font-size: 18px; letter-spacing: 3px;">
+    </div>
+    
+    <button class="btn-primary" onclick="checkLogin()">ACCEDI</button>
 </div>
 
+<!-- ================= APP PRINCIPALE ================= -->
 <div class="container" id="mainContainer">
-    <header>
-        <h1>⚡ Impegni e Contabilità <span>Cantieri Cloud</span></h1>
-    </header>
+    <div class="brand-header">
+        <div class="brand-logo"><span class="logo-accent">CANTIERI</span><span class="logo-white">CLOUD</span></div>
+        <p class="brand-subtitle">Operatività, Schedulazione & Contabilità Interventi</p>
+    </div>
 
     <div class="section-title" style="margin-top: 0;">Lavori in Programma</div>
     <div id="jobsContainer"></div>
@@ -449,7 +544,7 @@
             </div>
             
             <div class="form-group">
-                <label for="address">Indirizzo / Via</label>
+                <label for="address">Indirizzo / Via del Cantiere</label>
                 <input type="text" id="address" placeholder="es. Via delle Fornaci 12, Roma" required>
             </div>
 
@@ -465,60 +560,66 @@
             </div>
 
             <div class="form-group">
-                <label for="desc">Cosa c'è da fare?</label>
-                <textarea id="desc" rows="2" placeholder="es. Scatta il salvavita quando accende il forno." required></textarea>
+                <label for="desc">Descrizione Lavori / Segnalazione</label>
+                <textarea id="desc" rows="3" placeholder="es. Scatta il salvavita quando si accende il forno..." required></textarea>
             </div>
 
             <div class="form-group">
-                <label for="materials">Materiale Stimato Iniziale (Opzionale)</label>
-                <textarea id="materials" rows="2" placeholder="Scrivi liberamente qui il materiale previsto iniziale..."></textarea>
+                <label for="materials">Materiale Previsto / Fabbisogno Iniziale</label>
+                <textarea id="materials" rows="2" placeholder="Elenca liberamente qui i pezzi o attrezzi necessari..."></textarea>
             </div>
 
             <div class="form-row">
                 <div>
-                    <label for="date">Quando?</label>
+                    <label for="date">DATA INTERVENTO</label>
                     <input type="date" id="date" required>
                 </div>
                 <div>
-                    <label>Assegna a</label>
-                    <div class="workers-checkbox-list">
-                        <label class="worker-option"><input type="checkbox" name="workers" value="Gerardo"> Gerardo (29€/h)</label>
-                        <label class="worker-option"><input type="checkbox" name="workers" value="Silvano"> Silvano (29€/h)</label>
-                        <label class="worker-option"><input type="checkbox" name="workers" value="Marco"> Marco (15€/h)</label>
-                    </div>
+                    <label for="time">ORA APPUNTAMENTO</label>
+                    <input type="time" id="time" value="08:30" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>ASSEGNA SQUADRA</label>
+                <div class="workers-checkbox-list">
+                    <label class="worker-option"><input type="checkbox" name="workers" value="Gerardo"> Gerardo (29€/h)</label>
+                    <label class="worker-option"><input type="checkbox" name="workers" value="Silvano"> Silvano (29€/h)</label>
+                    <label class="worker-option"><input type="checkbox" name="workers" value="Marco"> Marco (15€/h)</label>
                 </div>
             </div>
             
-            <button type="submit" class="btn-primary">Salva nel Cloud</button>
+            <button type="submit" class="btn-primary" style="margin-top: 10px;">SALVA NEL CLOUD</button>
         </form>
     </div>
 
-    <div class="section-title">Registro Lavori Conclusi ed Economia</div>
+    <div class="section-title">Registro Commerciale ed Economia</div>
     <div id="completedJobsContainer"></div>
     
-    <button class="btn-excel" onclick="exportToExcel()">📊 Esporta Registro Economico in Excel</button>
+    <button class="btn-excel" onclick="exportToExcel()">📊 ESPORTA CONTABILITÀ IN EXCEL</button>
 </div>
 
+<!-- ================= MODALE CONSUNTIVO ================= -->
 <div class="modal-overlay" id="accountingModal">
     <div class="modal-box">
-        <div class="modal-title" id="modalTitle">Consuntivo Economico Lavoro</div>
+        <div class="modal-title" id="modalTitle">Consuntivo Economico</div>
         
         <div class="modal-section-title">⏱️ Ore Effettive Lavorate</div>
         <div id="modalHoursContainer"></div>
 
         <div class="modal-section-title">📦 Materiali e Pezzi Usati</div>
-        <div style="display: grid; grid-template-columns: 70px 1fr 100px 40px; gap: 8px; margin-bottom: 5px; color: var(--text-gray); font-size: 12px; font-weight: bold;">
+        <div style="display: grid; grid-template-columns: 70px 1fr 100px 42px; gap: 8px; margin-bottom: 8px; color: var(--text-muted); font-size: 11px; font-weight: 800; text-transform: uppercase;">
             <div>Quantità</div>
             <div>Descrizione Articolo</div>
-            <div>Prezzo Unit. (€)</div>
+            <div>Prezzo (€)</div>
             <div></div>
         </div>
         <div id="modalMaterialsContainer"></div>
         <button type="button" class="btn-add-row" onclick="addMaterialInputRow()">➕ Aggiungi Articolo</button>
 
         <div class="modal-footer-btns">
-            <button class="btn-modal-cancel" onclick="closeModal()">Annulla</button>
-            <button class="btn-modal-save" onclick="saveModalData()">Salva e Conferma</button>
+            <button class="btn-modal-cancel" onclick="closeModal()">ANNULLA</button>
+            <button class="btn-modal-save" onclick="saveModalData()">SALVA E CONFERMA</button>
         </div>
     </div>
 </div>
@@ -526,7 +627,7 @@
 <script>
     // --- ⚠️ CONFIGURAZIONE DATI CLOUD ---
     const SUPABASE_URL = "https://akyshoozwyxezvqvtncm.supabase.co"; 
-    const SUPABASE_KEY = "sb_publishable_iYFqaixRwg08V60Aj2lc1g_BkDWK6II"; // <-- Sostituisci questa stringa con la tua chiave reale lunga
+    const SUPABASE_KEY = "sb_publishable_iYFqaixRwg08V60Aj2lc1g_BkDWK6II"; 
     const ACCESS_PASSWORD = "Eatsleepraverepeat1"; 
     // ----------------------------------------------------------------------------------
 
@@ -542,9 +643,10 @@
     function showStatus(text, type) {
         const status = document.getElementById('cloudStatus');
         status.innerText = text;
-        status.style.backgroundColor = type === 'success' ? 'var(--done-green)' : 'var(--danger-red)';
+        status.style.backgroundColor = type === 'success' ? 'var(--lime-fluo)' : 'var(--danger-red)';
+        status.style.color = type === 'success' ? '#000000' : '#ffffff';
         status.style.display = 'block';
-        setTimeout(() => { status.style.display = 'none'; }, 3000);
+        setTimeout(() => { status.style.display = 'none'; }, 3500);
     }
 
     function checkLogin() {
@@ -553,10 +655,15 @@
             document.getElementById('loginScreen').style.display = 'none';
             document.getElementById('mainContainer').style.display = 'block';
             initSupabase();
+            requestNotificationPermission(); 
         } else {
-            alert("Password Errata!");
+            alert("PIN Errato!");
         }
     }
+
+    document.getElementById('appPassword').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') checkLogin();
+    });
 
     function initSupabase() {
         if(SUPABASE_KEY.includes("INSERISCI_QUI")) {
@@ -565,15 +672,64 @@
         }
         supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
         loadCloudData();
+
+        setInterval(checkAppReminders, 60000);
     }
+
+    // --- MOTORE NOTIFICHE PROMEMORIA ---
+    function requestNotificationPermission() {
+        if ("Notification" in window && Notification.permission === "default") {
+            Notification.requestPermission();
+        }
+    }
+
+    function checkAppReminders() {
+        if (!("Notification" in window) || Notification.permission !== "granted") return;
+
+        const now = new Date();
+        let notifiedHistory = JSON.parse(localStorage.getItem('cantieri_notified_jobs') || '{}');
+        let storageUpdated = false;
+
+        jobsList.forEach(job => {
+            if (job.completed) return;
+
+            const timeStr = job.time || '09:00';
+            const targetDate = new Date(`${job.date}T${timeStr}:00`);
+            const diffMs = targetDate - now;
+            const diffHours = diffMs / (1000 * 60 * 60);
+
+            if (diffHours <= 24 && diffHours > 23 && !notifiedHistory[`${job.id}_24h`]) {
+                sendPushNotification("📅 PROMEMORIA CANTIERE (Domani)", `Domani alle ${timeStr} appuntamento da ${job.client}.\n📍 ${job.address}`);
+                notifiedHistory[`${job.id}_24h`] = true;
+                storageUpdated = true;
+            }
+
+            if (diffHours <= 3 && diffHours > 0 && !notifiedHistory[`${job.id}_3h`]) {
+                sendPushNotification("⚡ INTERVENTO IMMINENTE", `Tra poche ore (${timeStr}) cantiere da ${job.client}.\n📍 ${job.address}`);
+                notifiedHistory[`${job.id}_3h`] = true;
+                storageUpdated = true;
+            }
+        });
+
+        if (storageUpdated) {
+            localStorage.setItem('cantieri_notified_jobs', JSON.stringify(notifiedHistory));
+        }
+    }
+
+    function sendPushNotification(title, bodyText) {
+        try {
+            new Notification(title, {
+                body: bodyText,
+                icon: "https://cdn-icons-png.flaticon.com/512/1043/1043478.png" 
+            });
+        } catch(e) { console.error("Notifica fallita", e); }
+    }
+    // ------------------------------------
 
     async function loadCloudData() {
         try {
             const { data, error } = await supabaseClient.from(TABELLA_NOME).select('*');
-            if(error) {
-                console.error(error);
-                return;
-            }
+            if(error) { console.error(error); return; }
             if (data && data.length > 0) {
                 const jobsRow = data.filter(r => r.key === 'jobs').pop();
                 const clientsRow = data.filter(r => r.key === 'clients').pop();
@@ -583,9 +739,8 @@
             }
             renderJobs();
             renderClientsDatalist();
-        } catch(err) {
-            console.error(err);
-        }
+            checkAppReminders(); 
+        } catch(err) { console.error(err); }
     }
 
     async function saveCloudData() {
@@ -593,7 +748,7 @@
             { key: 'jobs', value: JSON.stringify(jobsList) },
             { key: 'clients', value: JSON.stringify(savedClients) }
         ]);
-        showStatus("⚡ Registro Aggiornato nel Cloud!", 'success');
+        showStatus("⚡ Cloud Sincronizzato!", 'success');
     }
 
     function renderClientsDatalist() {
@@ -641,13 +796,13 @@
         const activeJobs = jobsList.filter(j => !j.completed);
         const doneJobs = jobsList.filter(j => j.completed);
 
-        if(activeJobs.length === 0) progContainer.innerHTML = '<div class="empty-state">Nessun lavoro in agenda.</div>';
+        if(activeJobs.length === 0) progContainer.innerHTML = '<div class="empty-state">Nessun cantiere in agenda.</div>';
         else {
-            activeJobs.sort((a,b) => new Date(a.date) - new Date(b.date));
+            activeJobs.sort((a,b) => new Date(`${a.date}T${a.time||'00:00'}`) - new Date(`${b.date}T${b.time||'00:00'}`));
             activeJobs.forEach(j => progContainer.innerHTML += generateJobHtml(j, false));
         }
 
-        if(doneJobs.length === 0) compContainer.innerHTML = '<div class="empty-state">Nessun lavoro concluso nel registro commerciale.</div>';
+        if(doneJobs.length === 0) compContainer.innerHTML = '<div class="empty-state">Nessuno storico consuntivato.</div>';
         else {
             doneJobs.sort((a,b) => new Date(b.date) - new Date(a.date));
             doneJobs.forEach(j => compContainer.innerHTML += generateJobHtml(j, true));
@@ -656,6 +811,7 @@
 
     function generateJobHtml(job, isCompleted) {
         const formattedDate = new Date(job.date).toLocaleDateString('it-IT');
+        const displayTime = job.time ? ` • ore ${job.time}` : '';
         const mapsUrl = "https://maps.google.com/?q=" + encodeURIComponent(job.address || '');
         let eco = isCompleted ? calculateJobEconomics(job) : null;
         
@@ -666,30 +822,30 @@
                 else workersHtml += `<div class="job-worker">👷 ${w}</div>`;
             });
         } else {
-            workersHtml += `<div class="job-worker" style="color:#ff9800;">⚠️ Da Assegnare</div>`;
+            workersHtml += `<div class="job-worker" style="color:#ffb300; border-color:#ffb300;">⚠️ Squadra non assegnata</div>`;
         }
         workersHtml += '</div>';
 
         return `
             <div class="job-card ${isCompleted ? 'completed' : ''}">
                 <div class="job-header">
-                    <div class="job-client"><strong>${job.client}</strong></div>
-                    <div class="job-date">📅 ${formattedDate}</div>
+                    <div class="job-client">${job.client}</div>
+                    <div class="job-date">📅 ${formattedDate}${displayTime}</div>
                 </div>
                 <div class="job-details">
                     <div>📍 <a href="${mapsUrl}" target="_blank" class="maps-link">${job.address} ↗</a></div>
                     ${job.phone ? `<div>📞 Tel: <a href="tel:${job.phone.replace(/[^0-9]/g,'')}" class="tel-link">${job.phone}</a></div>` : ''}
-                    ${job.email ? `<div>✉️ Email: <span style="color:#fff">${job.email}</span></div>` : ''}
+                    ${job.email ? `<div>✉️ Email: <span style="color:#e0e0e0">${job.email}</span></div>` : ''}
                 </div>
                 <div class="job-desc">${job.desc}</div>
-                ${!isCompleted && job.materials ? `<div class="job-materials"><div class="materials-title">📦 Materiale Previsto:</div><div>${job.materials}</div></div>` : ''}
-                ${isCompleted && eco.materialsString ? `<div class="job-materials"><div class="materials-title">📦 Materiali Usati:</div><div style="white-space:pre-line;">${eco.materialsString}</div></div>` : ''}
+                ${!isCompleted && job.materials ? `<div class="job-materials"><div class="materials-title">📦 Materiale Previsto:</div><div style="color:#cccccc;">${job.materials}</div></div>` : ''}
+                ${isCompleted && eco.materialsString ? `<div class="job-materials"><div class="materials-title">📦 Materiali Impiegati:</div><div style="white-space:pre-line; color:#cccccc;">${eco.materialsString}</div></div>` : ''}
                 
                 ${isCompleted ? `
                 <div class="economic-box">
-                    <div>🪛 Manodopera: <strong>${eco.laborCost.toFixed(2)} €</strong></div>
-                    <div>📦 Materiali: <strong>${eco.materialsCost.toFixed(2)} €</strong></div>
-                    <div class="total-highlight">💰 VALORE INTERVENTO: ${eco.totalPrice.toFixed(2)} €</div>
+                    <div>🪛 Manodopera: <strong style="color:#fff;">${eco.laborCost.toFixed(2)} €</strong></div>
+                    <div>📦 Materiali: <strong style="color:#fff;">${eco.materialsCost.toFixed(2)} €</strong></div>
+                    <div class="total-highlight">💰 TOTALE INTERVENTO: ${eco.totalPrice.toFixed(2)} €</div>
                 </div>` : ''}
 
                 <div class="job-footer">
@@ -713,6 +869,7 @@
         const descVal = document.getElementById('desc').value.trim();
         const materialsVal = document.getElementById('materials').value.trim();
         const dateVal = document.getElementById('date').value;
+        const timeVal = document.getElementById('time').value || '08:30';
 
         savedClients[clientVal] = { address: addressVal, phone: phoneVal, email: emailVal };
 
@@ -721,29 +878,33 @@
 
         jobsList.push({
             id: Date.now(), client: clientVal, address: addressVal, phone: phoneVal, email: emailVal,
-            desc: descVal, materials: materialsVal, date: dateVal, workers: checkedWorkers, completed: false
+            desc: descVal, materials: materialsVal, date: dateVal, time: timeVal, workers: checkedWorkers, completed: false
         });
 
         renderJobs();
         renderClientsDatalist();
+        checkAppReminders();
         await saveCloudData();
         this.reset();
+        document.getElementById('time').value = '08:30';
     });
 
     window.openAccountingModal = function(id) {
         activeJobId = id;
         const job = jobsList.find(j => j.id === id);
         
-        document.getElementById('modalTitle').innerText = `Contabilità: ${job.client}`;
+        document.getElementById('modalTitle').innerText = `Consuntivo: ${job.client}`;
         const hoursContainer = document.getElementById('modalHoursContainer');
         hoursContainer.innerHTML = '';
         
         job.workers.forEach(w => {
             const hrs = (job.hoursReport && job.hoursReport[w]) ? job.hoursReport[w] : 8;
             hoursContainer.innerHTML += `
-                <div style="margin-bottom:10px; display:flex; align-items:center; gap:10px;">
-                    <span style="width:150px;">👷 ${w}:</span>
-                    <input type="number" class="modal-hours-input" data-worker="${w}" value="${hrs}" step="0.5" style="width:80px;"> Ore
+                <div style="margin-bottom:12px; display:flex; align-items:center; justify-content:space-between; background:var(--bg-input); padding:10px 14px; border-radius:8px; border:1px solid var(--border-color);">
+                    <span style="font-weight:700; font-size:14px; color:#fff;">👷 ${w}</span>
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <input type="number" class="modal-hours-input" data-worker="${w}" value="${hrs}" step="0.5" style="width:85px; text-align:center; padding:8px;"> <span style="font-size:13px; color:var(--text-muted);">Ore</span>
+                    </div>
                 </div>`;
         });
 
@@ -762,9 +923,9 @@
         const div = document.createElement('div');
         div.className = 'material-row-input';
         div.innerHTML = `
-            <input type="number" class="mat-qty" value="${qty}" placeholder="1" step="any" required>
-            <input type="text" class="mat-name" value="${name}" placeholder="Articolo" required>
-            <input type="number" class="mat-price" value="${price}" placeholder="0.00" step="0.01" required>
+            <input type="number" class="mat-qty" value="${qty}" placeholder="1" step="any" required style="padding:10px; text-align:center;">
+            <input type="text" class="mat-name" value="${name}" placeholder="Nome Articolo / Pezzo" required style="padding:10px;">
+            <input type="number" class="mat-price" value="${price}" placeholder="0.00" step="0.01" required style="padding:10px; text-align:right;">
             <button type="button" class="btn-del-row" onclick="this.parentElement.remove()">❌</button>
         `;
         document.getElementById('modalMaterialsContainer').appendChild(div);
@@ -799,7 +960,7 @@
     };
 
     window.deleteJob = async function(id) {
-        if(confirm("Eliminare questo cantiere dalla sessione locale e aggiornare il Cloud?")) {
+        if(confirm("Eliminare definitivamente questo cantiere dal cloud?")) {
             jobsList = jobsList.filter(j => j.id !== id);
             renderJobs();
             await saveCloudData();
@@ -840,15 +1001,12 @@
             
             let eco = calculateJobEconomics(job);
 
-            // Generiamo l'elenco dei dipendenti come array di stringhe/oggetti per iterare facilmente
             let workersArray = job.workers.map(w => ({ nome: w, ore: job.hoursReport[w] || 0 }));
             if (workersArray.length === 0) {
                 workersArray.push({ nome: 'Nessuno Assegnato', ore: 0 });
             }
 
             let materialsArray = job.materialsCleaned && job.materialsCleaned.length > 0 ? job.materialsCleaned : [];
-            
-            // Troviamo il numero massimo di righe interne necessarie per questo cantiere
             const maxRighe = Math.max(workersArray.length, materialsArray.length);
 
             for (let i = 0; i < maxRighe; i++) {

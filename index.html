@@ -21,510 +21,129 @@
             --done-green: #00e676;
             --excel-green: #107c41;
             --info-blue: #2196f3;
+            --cal-orange: #ff9800;
         }
 
         * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+            box-sizing: border-box; margin: 0; padding: 0;
             font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             -webkit-font-smoothing: antialiased;
         }
 
-        body {
-            background-color: var(--bg-black);
-            color: var(--text-white);
-            padding: 24px 16px;
-            min-height: 100vh;
-        }
+        body { background-color: var(--bg-black); color: var(--text-white); padding: 24px 16px; min-height: 100vh; }
+        .container { max-width: 800px; margin: 0 auto; display: none; }
 
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            display: none;
-        }
+        .brand-header { text-align: center; margin-bottom: 32px; }
+        .brand-logo { font-size: 32px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+        .logo-accent { color: var(--lime-fluo); }
+        .logo-white { color: var(--text-white); }
+        .brand-subtitle { color: #7a838c; font-size: 14px; font-weight: 500; }
 
-        /* --- STILE HERO & BRANDING --- */
-        .brand-header {
-            text-align: center;
-            margin-bottom: 32px;
-        }
+        .card { background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 28px; margin-bottom: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+        #loginScreen { max-width: 420px; margin: 80px auto 0 auto; text-align: center; }
 
-        .brand-logo {
-            font-size: 32px;
-            font-weight: 800;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            margin-bottom: 4px;
-        }
+        .form-group { margin-bottom: 20px; text-align: left; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; text-align: left; }
 
-        .logo-accent {
-            color: var(--lime-fluo);
-        }
+        @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
 
-        .logo-white {
-            color: var(--text-white);
-        }
-
-        .brand-subtitle {
-            color: #7a838c;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        /* --- CARDS & MODULI --- */
-        .card {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 28px;
-            margin-bottom: 24px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-        }
-
-        #loginScreen {
-            max-width: 420px;
-            margin: 80px auto 0 auto;
-            text-align: center;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-            text-align: left;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            margin-bottom: 20px;
-            text-align: left;
-        }
-
-        @media (max-width: 600px) {
-            .form-row { grid-template-columns: 1fr; }
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: var(--text-muted);
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 1.2px;
-            text-transform: uppercase;
-        }
+        label { display: block; margin-bottom: 8px; color: var(--text-muted); font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; }
 
         input, textarea, select {
-            width: 100%;
-            padding: 14px 16px;
-            background-color: var(--bg-input);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            color: var(--text-white);
-            font-size: 15px;
-            font-weight: 500;
-            transition: border-color 0.2s, box-shadow 0.2s;
+            width: 100%; padding: 14px 16px; background-color: var(--bg-input); border: 1px solid var(--border-color);
+            border-radius: 8px; color: var(--text-white); font-size: 15px; font-weight: 500; transition: border-color 0.2s, box-shadow 0.2s;
         }
 
-        input::placeholder, textarea::placeholder {
-            color: #4a525a;
-        }
+        input::placeholder, textarea::placeholder { color: #4a525a; }
+        input:focus, textarea:focus, select:focus { outline: none; border-color: var(--lime-fluo); box-shadow: 0 0 0 3px rgba(204, 255, 0, 0.12); }
 
-        input:focus, textarea:focus, select:focus {
-            outline: none;
-            border-color: var(--lime-fluo);
-            box-shadow: 0 0 0 3px rgba(204, 255, 0, 0.12);
-        }
+        .workers-checkbox-list { background-color: var(--bg-input); border: 1px solid var(--border-color); border-radius: 8px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+        .worker-option { display: flex; align-items: center; gap: 12px; cursor: pointer; color: #e0e0e0; font-size: 14px; font-weight: 600; }
+        .worker-option input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--lime-fluo); cursor: pointer; }
 
-        /* --- CHECKBOX SQUADRA --- */
-        .workers-checkbox-list {
-            background-color: var(--bg-input);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
+        button { cursor: pointer; transition: all 0.2s ease; }
+        button:active { transform: scale(0.98); }
 
-        .worker-option {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            cursor: pointer;
-            color: #e0e0e0;
-            font-size: 14px;
-            font-weight: 600;
-            text-transform: none;
-            letter-spacing: 0;
-        }
+        .btn-primary { width: 100%; padding: 16px; background-color: var(--lime-fluo); border: none; border-radius: 8px; color: #000000; font-size: 15px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; box-shadow: 0 4px 20px rgba(204, 255, 0, 0.15); }
+        .btn-primary:hover { background-color: var(--lime-hover); box-shadow: 0 6px 25px rgba(204, 255, 0, 0.25); }
 
-        .worker-option input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            accent-color: var(--lime-fluo);
-            cursor: pointer;
-        }
-
-        /* --- BOTTONI PRINCIPALI --- */
-        button {
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        button:active {
-            transform: scale(0.98);
-        }
-
-        .btn-primary {
-            width: 100%;
-            padding: 16px;
-            background-color: var(--lime-fluo);
-            border: none;
-            border-radius: 8px;
-            color: #000000;
-            font-size: 15px;
-            font-weight: 800;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            box-shadow: 0 4px 20px rgba(204, 255, 0, 0.15);
-        }
-
-        .btn-primary:hover { 
-            background-color: var(--lime-hover); 
-            box-shadow: 0 6px 25px rgba(204, 255, 0, 0.25);
-        }
-
-        .btn-excel {
-            width: 100%;
-            padding: 16px;
-            background-color: var(--excel-green);
-            border: none;
-            border-radius: 8px;
-            color: white;
-            font-size: 15px;
-            font-weight: 700;
-            text-transform: uppercase;
-            margin-top: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
+        .btn-excel { width: 100%; padding: 16px; background-color: var(--excel-green); border: none; border-radius: 8px; color: white; font-size: 15px; font-weight: 700; text-transform: uppercase; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; }
         .btn-excel:hover { background-color: #156937; }
 
-        /* --- TITOLI SEZIONI --- */
-        .section-title {
-            font-size: 14px;
-            font-weight: 800;
-            margin: 36px 0 16px 0;
-            color: var(--lime-fluo);
-            text-transform: uppercase;
-            letter-spacing: 1.2px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+        .section-title { font-size: 14px; font-weight: 800; margin: 36px 0 16px 0; color: var(--lime-fluo); text-transform: uppercase; letter-spacing: 1.2px; display: flex; align-items: center; gap: 8px; }
+        .section-title::before { content: ""; display: inline-block; width: 6px; height: 16px; background-color: var(--lime-fluo); border-radius: 2px; }
 
-        .section-title::before {
-            content: "";
-            display: inline-block;
-            width: 6px;
-            height: 16px;
-            background-color: var(--lime-fluo);
-            border-radius: 2px;
-        }
+        .job-card { background-color: var(--bg-card); border: 1px solid var(--border-color); border-left: 4px solid var(--lime-fluo); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+        .job-card.completed { border-left-color: var(--done-green); opacity: 0.9; }
 
-        /* --- SCHEDE LAVORI IN ARCHIVIO --- */
-        .job-card {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-left: 4px solid var(--lime-fluo);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 16px;
-        }
-
-        .job-card.completed { 
-            border-left-color: var(--done-green); 
-            opacity: 0.9;
-        }
-
-        .job-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 12px;
-            gap: 10px;
-        }
-
+        .job-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; gap: 10px; }
         .job-client { font-weight: 700; font-size: 18px; color: var(--text-white); }
         .job-date { color: var(--lime-fluo); font-size: 13px; font-weight: 700; background: rgba(204,255,0,0.08); padding: 4px 10px; border-radius: 6px; white-space: nowrap; }
         .job-card.completed .job-date { color: var(--done-green); background: rgba(0,230,118,0.08); }
 
-        .job-details {
-            font-size: 13px;
-            color: #a0a8b0;
-            margin-bottom: 14px;
-            background-color: var(--bg-input);
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid rgba(255,255,255,0.03);
-        }
-
-        .job-details div {
-            margin-bottom: 6px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+        .job-details { font-size: 13px; color: #a0a8b0; margin-bottom: 14px; background-color: var(--bg-input); padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.03); }
+        .job-details div { margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
         .job-details div:last-child { margin-bottom: 0; }
 
-        .maps-link, .tel-link {
-            color: var(--lime-fluo);
-            text-decoration: none;
-            font-weight: 600;
-        }
-        .maps-link:hover, .tel-link:hover { text-decoration: underline; }
+        .maps-link, .tel-link { color: var(--lime-fluo); text-decoration: none; font-weight: 600; }
+        .job-desc { color: #d5dce2; margin-bottom: 16px; font-size: 15px; line-height: 1.5; white-space: pre-line; }
 
-        .job-desc { color: #d5dce2; margin-bottom: 16px; font-size: 15px; line-height: 1.5; white-space: pre-line; font-weight: 400; }
-
-        .job-materials {
-            background-color: rgba(204, 255, 0, 0.04);
-            border: 1px dashed rgba(204, 255, 0, 0.25);
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 16px;
-            font-size: 13px;
-        }
-        
-        .job-card.completed .job-materials {
-            background-color: rgba(0, 230, 118, 0.04);
-            border-color: rgba(0, 230, 118, 0.25);
-        }
-
-        .materials-title {
-            font-size: 11px;
-            text-transform: uppercase;
-            color: var(--lime-fluo);
-            font-weight: 800;
-            margin-bottom: 6px;
-            letter-spacing: 0.5px;
-        }
+        .job-materials { background-color: rgba(204, 255, 0, 0.04); border: 1px dashed rgba(204, 255, 0, 0.25); padding: 12px; border-radius: 8px; margin-bottom: 16px; font-size: 13px; }
+        .job-card.completed .job-materials { background-color: rgba(0, 230, 118, 0.04); border-color: rgba(0, 230, 118, 0.25); }
+        .materials-title { font-size: 11px; text-transform: uppercase; color: var(--lime-fluo); font-weight: 800; margin-bottom: 6px; }
         .job-card.completed .materials-title { color: var(--done-green); }
 
-        .economic-box {
-            background: #101010;
-            border: 1px solid #282828;
-            padding: 14px;
-            border-radius: 8px;
-            margin-bottom: 16px;
-            font-size: 13px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
+        .economic-box { background: #101010; border: 1px solid #282828; padding: 14px; border-radius: 8px; margin-bottom: 16px; font-size: 13px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .total-highlight { grid-column: span 2; border-top: 1px dashed #333; padding-top: 10px; font-size: 15px; color: var(--done-green); font-weight: 800; }
 
-        .total-highlight {
-            grid-column: span 2;
-            border-top: 1px dashed #333;
-            padding-top: 10px;
-            font-size: 15px;
-            color: var(--done-green);
-            font-weight: 800;
-        }
-
-        .job-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-top: 1px solid var(--border-color);
-            padding-top: 14px;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
+        .job-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-color); padding-top: 14px; flex-wrap: wrap; gap: 12px; }
         .workers-container { display: flex; flex-wrap: wrap; gap: 6px; }
 
-        .job-worker {
-            background-color: var(--bg-input);
-            padding: 6px 10px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--lime-fluo);
-            border: 1px solid rgba(204, 255, 0, 0.2);
-        }
+        .job-worker { background-color: var(--bg-input); padding: 6px 10px; border-radius: 6px; font-size: 12px; font-weight: 700; color: var(--lime-fluo); border: 1px solid rgba(204, 255, 0, 0.2); }
+        .job-worker.completed-worker { color: var(--text-white); background-color: #123819; border-color: var(--done-green); }
 
-        .job-worker.completed-worker {
-            color: var(--text-white);
-            background-color: #123819;
-            border-color: var(--done-green);
-        }
-
-        .job-actions { display: flex; gap: 8px; }
-
-        .btn-action {
-            background-color: transparent;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
+        .job-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+        .btn-action { background-color: transparent; padding: 8px 12px; border-radius: 6px; font-size: 12px; font-weight: 700; text-transform: uppercase; }
         .btn-done { border: 1px solid var(--lime-fluo); color: var(--lime-fluo); }
-        .btn-done:hover { background-color: var(--lime-fluo); color: #000; }
+        .btn-cal { border: 1px solid var(--cal-orange); color: var(--cal-orange); }
+        .btn-cal:hover { background-color: var(--cal-orange); color: #000; }
         .btn-edit { border: 1px solid var(--info-blue); color: var(--info-blue); }
-        .btn-edit:hover { background-color: var(--info-blue); color: #fff; }
         .btn-delete { border: 1px solid var(--danger-red); color: var(--danger-red); }
-        .btn-delete:hover { background-color: var(--danger-red); color: #fff; }
 
-        /* --- CLOUD STATUS TOAST --- */
-        #cloudStatus {
-            position: fixed;
-            top: 24px;
-            right: 24px;
-            padding: 14px 24px;
-            border-radius: 8px;
-            color: #000;
-            font-weight: 800;
-            font-size: 13px;
-            z-index: 2000;
-            display: none;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
+        #cloudStatus { position: fixed; top: 24px; right: 24px; padding: 14px 24px; border-radius: 8px; color: #000; font-weight: 800; font-size: 13px; z-index: 2000; display: none; box-shadow: 0 10px 25px rgba(0,0,0,0.6); text-transform: uppercase; }
 
-        /* --- MODALE ACCOUNTING --- */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.88);
-            backdrop-filter: blur(5px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            visibility: hidden;
-            opacity: 0;
-            transition: opacity 0.2s, visibility 0.2s;
-            padding: 16px;
-        }
-
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.88); backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center; z-index: 1000; visibility: hidden; opacity: 0; transition: opacity 0.2s; padding: 16px; }
         .modal-overlay.active { visibility: visible; opacity: 1; }
+        .modal-box { background: var(--bg-card); border: 1px solid var(--lime-fluo); border-radius: 16px; width: 100%; max-width: 650px; max-height: 90vh; overflow-y: auto; padding: 28px; }
+        .modal-title { font-size: 18px; font-weight: 800; color: var(--lime-fluo); text-transform: uppercase; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 14px; }
+        .modal-section-title { font-size: 12px; color: var(--text-muted); text-transform: uppercase; margin: 20px 0 10px 0; font-weight: 800; }
 
-        .modal-box {
-            background: var(--bg-card);
-            border: 1px solid var(--lime-fluo);
-            border-radius: 16px;
-            width: 100%;
-            max-width: 650px;
-            max-height: 90vh;
-            overflow-y: auto;
-            padding: 28px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
-        }
+        .material-row-input { display: grid; grid-template-columns: 70px 1fr 100px 42px; gap: 8px; margin-bottom: 10px; align-items: center; }
+        .btn-add-row { background: transparent; border: 1px dashed var(--lime-fluo); color: var(--lime-fluo); padding: 10px; width: 100%; border-radius: 8px; margin-top: 8px; font-weight: 700; text-transform: uppercase; }
+        .btn-del-row { background: transparent; border: 1px solid var(--danger-red); color: var(--danger-red); border-radius: 8px; height: 46px; font-weight: bold; }
 
-        .modal-title {
-            font-size: 18px;
-            font-weight: 800;
-            color: var(--lime-fluo);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 20px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 14px;
-        }
-
-        .modal-section-title {
-            font-size: 12px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin: 20px 0 10px 0;
-            font-weight: 800;
-        }
-
-        .material-row-input {
-            display: grid;
-            grid-template-columns: 70px 1fr 100px 42px;
-            gap: 8px;
-            margin-bottom: 10px;
-            align-items: center;
-        }
-
-        .btn-add-row {
-            background: transparent;
-            border: 1px dashed var(--lime-fluo);
-            color: var(--lime-fluo);
-            padding: 10px;
-            width: 100%;
-            border-radius: 8px;
-            margin-top: 8px;
-            font-size: 13px;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-        .btn-add-row:hover { background: rgba(204,255,0,0.06); }
-
-        .btn-del-row {
-            background: transparent;
-            border: 1px solid var(--danger-red);
-            color: var(--danger-red);
-            border-radius: 8px;
-            height: 46px;
-            font-weight: bold;
-        }
-        .btn-del-row:hover { background: var(--danger-red); color: white; }
-
-        .modal-footer-btns {
-            display: flex;
-            justify-content: flex-end;
-            gap: 12px;
-            margin-top: 32px;
-            border-top: 1px solid var(--border-color);
-            padding-top: 20px;
-        }
-
+        .modal-footer-btns { display: flex; justify-content: flex-end; gap: 12px; margin-top: 32px; border-top: 1px solid var(--border-color); padding-top: 20px; }
         .btn-modal-save { background: var(--done-green); color: black; font-weight: 800; text-transform: uppercase; font-size: 13px; border: none; padding: 12px 24px; border-radius: 8px; }
         .btn-modal-cancel { background: #2c2c2c; color: white; font-weight: 700; text-transform: uppercase; font-size: 13px; border: none; padding: 12px 24px; border-radius: 8px; }
-
-        .empty-state {
-            text-align: center;
-            color: var(--text-muted);
-            padding: 32px 20px;
-            font-size: 14px;
-            background: var(--bg-card);
-            border-radius: 12px;
-            border: 1px dashed var(--border-color);
-        }
+        .empty-state { text-align: center; color: var(--text-muted); padding: 32px 20px; font-size: 14px; background: var(--bg-card); border-radius: 12px; border: 1px dashed var(--border-color); }
     </style>
 </head>
 <body>
 
 <div id="cloudStatus"></div>
 
-<!-- ================= SCHERMATA DI LOGIN ================= -->
 <div id="loginScreen" class="card">
     <div class="brand-header" style="margin-bottom: 24px;">
         <div class="brand-logo"><span class="logo-accent">CANTIERI</span><span class="logo-white">CLOUD</span></div>
         <p class="brand-subtitle">Area Riservata • Gestione Cantieri</p>
     </div>
-
     <div class="form-group">
         <label for="appPassword">PIN DI ACCESSO</label>
         <input type="password" id="appPassword" placeholder="Inserisci PIN" style="text-align:center; font-size: 18px; letter-spacing: 3px;">
     </div>
-    
     <button class="btn-primary" onclick="checkLogin()">ACCEDI</button>
 </div>
 
-<!-- ================= APP PRINCIPALE ================= -->
 <div class="container" id="mainContainer">
     <div class="brand-header">
         <div class="brand-logo"><span class="logo-accent">CANTIERI</span><span class="logo-white">CLOUD</span></div>
@@ -536,13 +155,12 @@
 
     <div class="section-title" id="formSectionTitle">Nuovo Intervento</div>
     <div class="card">
-        <!-- Banner avviso modalità modifica attiva -->
         <div id="editBanner" style="display:none; background: rgba(33, 150, 243, 0.12); border: 1px solid var(--info-blue); padding: 12px 16px; border-radius: 8px; margin-bottom: 20px; align-items: center; justify-content: space-between;">
             <div>
-                <span style="font-size: 11px; font-weight: 800; color: var(--info-blue); text-transform: uppercase; letter-spacing: 0.8px;">✏️ Modifica Intervento Attiva</span>
+                <span style="font-size: 11px; font-weight: 800; color: var(--info-blue); text-transform: uppercase;">✏️ Modifica Intervento Attiva</span>
                 <div style="font-size: 15px; font-weight: 700; color: var(--text-white); margin-top: 2px;" id="editBannerClient"></div>
             </div>
-            <button type="button" onclick="cancelEdit()" style="background: #242424; border: 1px solid #444; color: #fff; padding: 8px 12px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer;">ANNULLA</button>
+            <button type="button" onclick="cancelEdit()" style="background: #242424; border: 1px solid #444; color: #fff; padding: 8px 12px; border-radius: 6px; font-size: 11px; font-weight: 700;">ANNULLA</button>
         </div>
 
         <form id="jobForm">
@@ -551,12 +169,10 @@
                 <input type="text" id="client" placeholder="es. Signora Maria" list="clientsList" autocomplete="off" required>
                 <datalist id="clientsList"></datalist>
             </div>
-            
             <div class="form-group">
                 <label for="address">Indirizzo / Via del Cantiere</label>
                 <input type="text" id="address" placeholder="es. Via delle Fornaci 12, Roma" required>
             </div>
-
             <div class="form-row">
                 <div>
                     <label for="phone">Telefono / Cellulare</label>
@@ -567,17 +183,14 @@
                     <input type="email" id="email" placeholder="es. maria@email.it">
                 </div>
             </div>
-
             <div class="form-group">
                 <label for="desc">Descrizione Lavori / Segnalazione</label>
                 <textarea id="desc" rows="3" placeholder="es. Scatta il salvavita quando si accende il forno..." required></textarea>
             </div>
-
             <div class="form-group">
                 <label for="materials">Materiale Previsto / Fabbisogno Iniziale</label>
                 <textarea id="materials" rows="2" placeholder="Elenca liberamente qui i pezzi o attrezzi necessari..."></textarea>
             </div>
-
             <div class="form-row">
                 <div>
                     <label for="date">DATA INTERVENTO</label>
@@ -588,7 +201,6 @@
                     <input type="time" id="time" value="08:30" required>
                 </div>
             </div>
-
             <div class="form-group">
                 <label>ASSEGNA SQUADRA</label>
                 <div class="workers-checkbox-list">
@@ -597,35 +209,26 @@
                     <label class="worker-option"><input type="checkbox" name="workers" value="Marco"> Marco (15€/h)</label>
                 </div>
             </div>
-            
             <button type="submit" class="btn-primary" style="margin-top: 10px;">SALVA NEL CLOUD</button>
         </form>
     </div>
 
     <div class="section-title">Registro Commerciale ed Economia</div>
     <div id="completedJobsContainer"></div>
-    
     <button class="btn-excel" onclick="exportToExcel()">📊 ESPORTA CONTABILITÀ IN EXCEL</button>
 </div>
 
-<!-- ================= MODALE CONSUNTIVO ================= -->
 <div class="modal-overlay" id="accountingModal">
     <div class="modal-box">
         <div class="modal-title" id="modalTitle">Consuntivo Economico</div>
-        
         <div class="modal-section-title">⏱️ Ore Effettive Lavorate</div>
         <div id="modalHoursContainer"></div>
-
         <div class="modal-section-title">📦 Materiali e Pezzi Usati</div>
         <div style="display: grid; grid-template-columns: 70px 1fr 100px 42px; gap: 8px; margin-bottom: 8px; color: var(--text-muted); font-size: 11px; font-weight: 800; text-transform: uppercase;">
-            <div>Quantità</div>
-            <div>Descrizione Articolo</div>
-            <div>Prezzo (€)</div>
-            <div></div>
+            <div>Quantità</div><div>Descrizione Articolo</div><div>Prezzo (€)</div><div></div>
         </div>
         <div id="modalMaterialsContainer"></div>
         <button type="button" class="btn-add-row" onclick="addMaterialInputRow()">➕ Aggiungi Articolo</button>
-
         <div class="modal-footer-btns">
             <button class="btn-modal-cancel" onclick="closeModal()">ANNULLA</button>
             <button class="btn-modal-save" onclick="saveModalData()">SALVA E CONFERMA</button>
@@ -634,11 +237,9 @@
 </div>
 
 <script>
-    // --- ⚠️ CONFIGURAZIONE DATI CLOUD ---
     const SUPABASE_URL = "https://akyshoozwyxezvqvtncm.supabase.co"; 
     const SUPABASE_KEY = "sb_publishable_iYFqaixRwg08V60Aj2lc1g_BkDWK6II"; 
     const ACCESS_PASSWORD = "Eatsleepraverepeat1"; 
-    // ----------------------------------------------------------------------------------
 
     const TABELLA_NOME = "APP GESTIONE CANTIERI";
     const WAGE_RATES = { "Gerardo": 29, "Silvano": 29, "Marco": 15 };
@@ -648,7 +249,7 @@
     let jobsList = [];
     let savedClients = {};
     let activeJobId = null;
-    let editingJobId = null; // <-- Variabile tracciamento modifica appuntamento
+    let editingJobId = null; 
 
     function showStatus(text, type) {
         const status = document.getElementById('cloudStatus');
@@ -660,96 +261,85 @@
     }
 
     function checkLogin() {
-        const pass = document.getElementById('appPassword').value;
-        if(pass === ACCESS_PASSWORD) {
+        if(document.getElementById('appPassword').value === ACCESS_PASSWORD) {
             document.getElementById('loginScreen').style.display = 'none';
             document.getElementById('mainContainer').style.display = 'block';
             initSupabase();
-            requestNotificationPermission(); 
-        } else {
-            alert("PIN Errato!");
-        }
+        } else { alert("PIN Errato!"); }
     }
 
-    document.getElementById('appPassword').addEventListener('keypress', function (e) {
-        if (e.key === 'Enter') checkLogin();
-    });
+    document.getElementById('appPassword').addEventListener('keypress', e => { if (e.key === 'Enter') checkLogin(); });
 
     function initSupabase() {
-        if(SUPABASE_KEY.includes("INSERISCI_QUI")) {
-            alert("Attenzione: Incolla la tua Publishable key di Supabase nel file HTML per far funzionare il Cloud!");
-            return;
-        }
         supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
         loadCloudData();
-
-        setInterval(checkAppReminders, 60000);
     }
 
-    // --- MOTORE NOTIFICHE PROMEMORIA ---
-    function requestNotificationPermission() {
-        if ("Notification" in window && Notification.permission === "default") {
-            Notification.requestPermission();
-        }
-    }
+    // =========================================================================
+    // --- IL PONTE CALENDARIO NATIVO (.ICS) CHE SVEGLIA IL TELEFONO ---
+    // =========================================================================
+    window.triggerNativeCalendar = function(job) {
+        const cleanDate = job.date.replace(/-/g, '');
+        const cleanTime = (job.time || '08:30').replace(':', '');
+        const dtStart = `${cleanDate}T${cleanTime}00`;
+        
+        let [h, m] = (job.time || '08:30').split(':').map(Number);
+        const dtEnd = `${cleanDate}T${String((h + 2) % 24).padStart(2, '0')}${String(m).padStart(2, '0')}00`;
 
-    function checkAppReminders() {
-        if (!("Notification" in window) || Notification.permission !== "granted") return;
+        const safeDesc = (job.desc || '').replace(/\r?\n/g, ' - ');
+        const safeMat = (job.materials || 'Nessuno').replace(/\r?\n/g, ' - ');
 
-        const now = new Date();
-        let notifiedHistory = JSON.parse(localStorage.getItem('cantieri_notified_jobs') || '{}');
-        let storageUpdated = false;
+        const icsContent = [
+            "BEGIN:VCALENDAR",
+            "VERSION:2.0",
+            "PRODID:-//Cantieri Cloud//App//IT",
+            "BEGIN:VEVENT",
+            `SUMMARY:👷 Cantiere: ${job.client}`,
+            `DESCRIPTION:LAVORO: ${safeDesc}\\nMATERIALI: ${safeMat}\\nTEL: ${job.phone || '-'}`,
+            `LOCATION:${job.address}`,
+            `DTSTART:${dtStart}`,
+            `DTEND:${dtEnd}`,
+            "BEGIN:VALARM",
+            "TRIGGER:-PT24H",
+            "ACTION:DISPLAY",
+            "DESCRIPTION:Promemoria Cantiere Domani",
+            "END:VALARM",
+            "BEGIN:VALARM",
+            "TRIGGER:-PT3H",
+            "ACTION:DISPLAY",
+            "DESCRIPTION:Intervento tra 3 ore",
+            "END:VALARM",
+            "END:VEVENT",
+            "END:VCALENDAR"
+        ].join("\r\n");
 
-        jobsList.forEach(job => {
-            if (job.completed) return;
+        const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.setAttribute('download', `Cantiere_${job.client.replace(/[^a-zA-Z0-9]/g, '_')}.ics`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
 
-            const timeStr = job.time || '09:00';
-            const targetDate = new Date(`${job.date}T${timeStr}:00`);
-            const diffMs = targetDate - now;
-            const diffHours = diffMs / (1000 * 60 * 60);
-
-            if (diffHours <= 24 && diffHours > 23 && !notifiedHistory[`${job.id}_24h`]) {
-                sendPushNotification("📅 PROMEMORIA CANTIERE (Domani)", `Domani alle ${timeStr} appuntamento da ${job.client}.\n📍 ${job.address}`);
-                notifiedHistory[`${job.id}_24h`] = true;
-                storageUpdated = true;
-            }
-
-            if (diffHours <= 3 && diffHours > 0 && !notifiedHistory[`${job.id}_3h`]) {
-                sendPushNotification("⚡ INTERVENTO IMMINENTE", `Tra poche ore (${timeStr}) cantiere da ${job.client}.\n📍 ${job.address}`);
-                notifiedHistory[`${job.id}_3h`] = true;
-                storageUpdated = true;
-            }
-        });
-
-        if (storageUpdated) {
-            localStorage.setItem('cantieri_notified_jobs', JSON.stringify(notifiedHistory));
-        }
-    }
-
-    function sendPushNotification(title, bodyText) {
-        try {
-            new Notification(title, {
-                body: bodyText,
-                icon: "https://cdn-icons-png.flaticon.com/512/1043/1043478.png" 
-            });
-        } catch(e) { console.error("Notifica fallita", e); }
-    }
-    // ------------------------------------
+    window.triggerNativeCalendarById = function(id) {
+        const j = jobsList.find(x => x.id === id);
+        if(j) triggerNativeCalendar(j);
+    };
+    // =========================================================================
 
     async function loadCloudData() {
         try {
             const { data, error } = await supabaseClient.from(TABELLA_NOME).select('*');
-            if(error) { console.error(error); return; }
+            if(error) return;
             if (data && data.length > 0) {
                 const jobsRow = data.filter(r => r.key === 'jobs').pop();
                 const clientsRow = data.filter(r => r.key === 'clients').pop();
-
                 jobsList = jobsRow ? JSON.parse(jobsRow.value) : [];
                 savedClients = clientsRow ? JSON.parse(clientsRow.value) : {};
             }
             renderJobs();
             renderClientsDatalist();
-            checkAppReminders(); 
         } catch(err) { console.error(err); }
     }
 
@@ -765,9 +355,7 @@
         const list = document.getElementById('clientsList');
         list.innerHTML = '';
         Object.keys(savedClients).sort().forEach(c => {
-            const opt = document.createElement('option');
-            opt.value = c;
-            list.appendChild(opt);
+            const opt = document.createElement('option'); opt.value = c; list.appendChild(opt);
         });
     }
 
@@ -782,11 +370,8 @@
 
     function calculateJobEconomics(job) {
         let laborCost = 0;
-        if(job.workers && job.hoursReport) {
-            job.workers.forEach(w => { laborCost += (parseFloat(job.hoursReport[w]) || 0) * (WAGE_RATES[w] || 0); });
-        }
-        let materialsCost = 0;
-        let formattedMaterials = [];
+        if(job.workers && job.hoursReport) job.workers.forEach(w => { laborCost += (parseFloat(job.hoursReport[w]) || 0) * (WAGE_RATES[w] || 0); });
+        let materialsCost = 0, formattedMaterials = [];
         if (job.materialsCleaned) {
             job.materialsCleaned.forEach(m => {
                 materialsCost += m.qty * m.price;
@@ -797,14 +382,9 @@
     }
 
     function renderJobs() {
-        const progContainer = document.getElementById('jobsContainer');
-        const compContainer = document.getElementById('completedJobsContainer');
-        
-        progContainer.innerHTML = '';
-        compContainer.innerHTML = '';
-
-        const activeJobs = jobsList.filter(j => !j.completed);
-        const doneJobs = jobsList.filter(j => j.completed);
+        const progContainer = document.getElementById('jobsContainer'), compContainer = document.getElementById('completedJobsContainer');
+        progContainer.innerHTML = ''; compContainer.innerHTML = '';
+        const activeJobs = jobsList.filter(j => !j.completed), doneJobs = jobsList.filter(j => j.completed);
 
         if(activeJobs.length === 0) progContainer.innerHTML = '<div class="empty-state">Nessun cantiere in agenda.</div>';
         else {
@@ -827,13 +407,8 @@
         
         let workersHtml = '<div class="workers-container">';
         if(job.workers && job.workers.length > 0) {
-            job.workers.forEach(w => {
-                if(isCompleted) workersHtml += `<div class="job-worker completed-worker">👷 ${w}: ${job.hoursReport[w] || 0}h</div>`;
-                else workersHtml += `<div class="job-worker">👷 ${w}</div>`;
-            });
-        } else {
-            workersHtml += `<div class="job-worker" style="color:#ffb300; border-color:#ffb300;">⚠️ Squadra non assegnata</div>`;
-        }
+            job.workers.forEach(w => workersHtml += `<div class="job-worker ${isCompleted ? 'completed-worker' : ''}">👷 ${w}${isCompleted ? `: ${job.hoursReport[w]||0}h` : ''}</div>`);
+        } else { workersHtml += `<div class="job-worker" style="color:#ffb300; border-color:#ffb300;">⚠️ Squadra non assegnata</div>`; }
         workersHtml += '</div>';
 
         return `
@@ -863,10 +438,9 @@
                     <div class="job-actions">
                         ${!isCompleted ? `
                             <button class="btn-action btn-done" onclick="openAccountingModal(${job.id})">Chiudi ✔</button>
+                            <button class="btn-action btn-cal" onclick="triggerNativeCalendarById(${job.id})">📅 Calendario</button>
                             <button class="btn-action btn-edit" onclick="editScheduledJob(${job.id})">Modifica ✏️</button>
-                        ` : `
-                            <button class="btn-action btn-edit" onclick="openAccountingModal(${job.id})">Modifica ✏️</button>
-                        `}
+                        ` : `<button class="btn-action btn-edit" onclick="openAccountingModal(${job.id})">Modifica ✏️</button>`}
                         <button class="btn-action btn-delete" onclick="deleteJob(${job.id})">Elimina</button>
                     </div>
                 </div>
@@ -874,18 +448,13 @@
         `;
     }
 
-    // --- FUNZIONI CARICAMENTO IN MODALITÀ MODIFICA ---
     window.editScheduledJob = function(id) {
         const job = jobsList.find(j => j.id === id);
         if(!job) return;
-
         editingJobId = id;
-
         document.getElementById('formSectionTitle').innerText = "Modifica Appuntamento";
-        
-        const banner = document.getElementById('editBanner');
-        banner.style.display = 'flex';
-        document.getElementById('editBannerClient').innerText = `${job.client} (programmato per il ${new Date(job.date).toLocaleDateString('it-IT')})`;
+        document.getElementById('editBanner').style.display = 'flex';
+        document.getElementById('editBannerClient').innerText = `${job.client} (${new Date(job.date).toLocaleDateString('it-IT')})`;
 
         document.getElementById('client').value = job.client || '';
         document.getElementById('address').value = job.address || '';
@@ -896,34 +465,20 @@
         document.getElementById('date').value = job.date || '';
         document.getElementById('time').value = job.time || '08:30';
 
-        document.querySelectorAll('input[name="workers"]').forEach(cb => {
-            cb.checked = job.workers && job.workers.includes(cb.value);
-        });
+        document.querySelectorAll('input[name="workers"]').forEach(cb => cb.checked = job.workers && job.workers.includes(cb.value));
 
-        const submitBtn = document.querySelector('#jobForm button[type="submit"]');
-        submitBtn.innerText = "💾 AGGIORNA INTERVENTO NEL CLOUD";
-        submitBtn.style.backgroundColor = "var(--info-blue)";
-        submitBtn.style.color = "#ffffff";
-        submitBtn.style.boxShadow = "0 4px 20px rgba(33, 150, 243, 0.25)";
-
+        const sub = document.querySelector('#jobForm button[type="submit"]');
+        sub.innerText = "💾 AGGIORNA INTERVENTO"; sub.style.backgroundColor = "var(--info-blue)"; sub.style.color = "#fff";
         document.getElementById('formSectionTitle').scrollIntoView({ behavior: 'smooth' });
     };
 
     window.cancelEdit = function() {
-        editingJobId = null;
-        document.getElementById('jobForm').reset();
-        document.getElementById('time').value = '08:30';
-        document.getElementById('formSectionTitle').innerText = "Nuovo Intervento";
-        document.getElementById('editBanner').style.display = 'none';
-
-        const submitBtn = document.querySelector('#jobForm button[type="submit"]');
-        submitBtn.innerText = "SALVA NEL CLOUD";
-        submitBtn.style.backgroundColor = "";
-        submitBtn.style.color = "";
-        submitBtn.style.boxShadow = "";
+        editingJobId = null; document.getElementById('jobForm').reset(); document.getElementById('time').value = '08:30';
+        document.getElementById('formSectionTitle').innerText = "Nuovo Intervento"; document.getElementById('editBanner').style.display = 'none';
+        const sub = document.querySelector('#jobForm button[type="submit"]');
+        sub.innerText = "SALVA NEL CLOUD"; sub.style.backgroundColor = ""; sub.style.color = "";
     };
 
-    // --- GESTIONE SUBMIT FORM UNIVERSALE ---
     document.getElementById('jobForm').addEventListener('submit', async function(e) {
         e.preventDefault();
         const clientVal = document.getElementById('client').value.trim();
@@ -936,81 +491,52 @@
         const timeVal = document.getElementById('time').value || '08:30';
 
         savedClients[clientVal] = { address: addressVal, phone: phoneVal, email: emailVal };
-
         const checkedWorkers = [];
         document.querySelectorAll('input[name="workers"]:checked').forEach(cb => checkedWorkers.push(cb.value));
 
+        let currentJobObj = null;
+
         if (editingJobId !== null) {
-            // Aggiornamento appuntamento esistente
             const idx = jobsList.findIndex(j => j.id === editingJobId);
             if (idx !== -1) {
-                jobsList[idx].client = clientVal;
-                jobsList[idx].address = addressVal;
-                jobsList[idx].phone = phoneVal;
-                jobsList[idx].email = emailVal;
-                jobsList[idx].desc = descVal;
-                jobsList[idx].materials = materialsVal;
-                jobsList[idx].date = dateVal;
-                jobsList[idx].time = timeVal;
-                jobsList[idx].workers = checkedWorkers;
-
-                // Cancella la cache notifiche per fare in modo che ricalcoli l'allarme se la data/ora è cambiata
-                let notifHist = JSON.parse(localStorage.getItem('cantieri_notified_jobs') || '{}');
-                delete notifHist[`${editingJobId}_24h`];
-                delete notifHist[`${editingJobId}_3h`];
-                localStorage.setItem('cantieri_notified_jobs', JSON.stringify(notifHist));
+                jobsList[idx] = { ...jobsList[idx], client: clientVal, address: addressVal, phone: phoneVal, email: emailVal, desc: descVal, materials: materialsVal, date: dateVal, time: timeVal, workers: checkedWorkers };
+                currentJobObj = jobsList[idx];
             }
             showStatus("✏️ Modifiche salvate!", 'success');
             cancelEdit();
         } else {
-            // Inserimento nuovo cantiere
-            jobsList.push({
-                id: Date.now(), client: clientVal, address: addressVal, phone: phoneVal, email: emailVal,
-                desc: descVal, materials: materialsVal, date: dateVal, time: timeVal, workers: checkedWorkers, completed: false
-            });
-            this.reset();
-            document.getElementById('time').value = '08:30';
+            currentJobObj = { id: Date.now(), client: clientVal, address: addressVal, phone: phoneVal, email: emailVal, desc: descVal, materials: materialsVal, date: dateVal, time: timeVal, workers: checkedWorkers, completed: false };
+            jobsList.push(currentJobObj);
+            this.reset(); document.getElementById('time').value = '08:30';
         }
 
-        renderJobs();
-        renderClientsDatalist();
-        checkAppReminders();
+        renderJobs(); renderClientsDatalist();
         await saveCloudData();
+
+        // SCATTA AUTOMATICAMENTE IL DOWNLOAD DEL CALENDARIO NATIVO ALLA FINE DEL SALVATAGGIO!
+        if(currentJobObj) triggerNativeCalendar(currentJobObj);
     });
 
     window.openAccountingModal = function(id) {
-        activeJobId = id;
-        const job = jobsList.find(j => j.id === id);
-        
+        activeJobId = id; const job = jobsList.find(j => j.id === id);
         document.getElementById('modalTitle').innerText = `Consuntivo: ${job.client}`;
-        const hoursContainer = document.getElementById('modalHoursContainer');
-        hoursContainer.innerHTML = '';
-        
+        const hoursContainer = document.getElementById('modalHoursContainer'); hoursContainer.innerHTML = '';
         job.workers.forEach(w => {
             const hrs = (job.hoursReport && job.hoursReport[w]) ? job.hoursReport[w] : 8;
             hoursContainer.innerHTML += `
                 <div style="margin-bottom:12px; display:flex; align-items:center; justify-content:space-between; background:var(--bg-input); padding:10px 14px; border-radius:8px; border:1px solid var(--border-color);">
                     <span style="font-weight:700; font-size:14px; color:#fff;">👷 ${w}</span>
-                    <div style="display:flex; align-items:center; gap:8px;">
-                        <input type="number" class="modal-hours-input" data-worker="${w}" value="${hrs}" step="0.5" style="width:85px; text-align:center; padding:8px;"> <span style="font-size:13px; color:var(--text-muted);">Ore</span>
-                    </div>
+                    <div><input type="number" class="modal-hours-input" data-worker="${w}" value="${hrs}" step="0.5" style="width:85px; text-align:center; padding:8px;"> <span style="font-size:13px; color:var(--text-muted);">Ore</span></div>
                 </div>`;
         });
-
-        const matContainer = document.getElementById('modalMaterialsContainer');
-        matContainer.innerHTML = '';
-        if(job.materialsCleaned && job.materialsCleaned.length > 0) {
-            job.materialsCleaned.forEach(m => addMaterialInputRow(m.qty, m.name, m.price));
-        } else {
-            addMaterialInputRow('', '', '');
-        }
-
+        const matContainer = document.getElementById('modalMaterialsContainer'); matContainer.innerHTML = '';
+        if(job.materialsCleaned && job.materialsCleaned.length > 0) job.materialsCleaned.forEach(m => addMaterialInputRow(m.qty, m.name, m.price));
+        else addMaterialInputRow('', '', '');
         document.getElementById('accountingModal').classList.add('active');
     };
 
     window.addMaterialInputRow = function(qty='', name='', price='') {
-        const div = document.createElement('div');
-        div.className = 'material-row-input';
+        const div = document.createElement('div'); div.className = 'material-row-input';
         div.innerHTML = `
             <input type="number" class="mat-qty" value="${qty}" placeholder="1" step="any" required style="padding:10px; text-align:center;">
             <input type="text" class="mat-name" value="${name}" placeholder="Nome Articolo / Pezzo" required style="padding:10px;">
@@ -1020,121 +546,49 @@
         document.getElementById('modalMaterialsContainer').appendChild(div);
     };
 
-    window.closeModal = function() { 
-        document.getElementById('accountingModal').classList.remove('active'); 
-        activeJobId = null;
-    };
+    window.closeModal = function() { document.getElementById('accountingModal').classList.remove('active'); activeJobId = null; };
 
     window.saveModalData = async function() {
-        const job = jobsList.find(j => j.id === activeJobId);
-        if(!job) return;
-
-        job.hoursReport = {};
-        document.querySelectorAll('.modal-hours-input').forEach(i => {
-            job.hoursReport[i.getAttribute('data-worker')] = parseFloat(i.value) || 0;
-        });
-
+        const job = jobsList.find(j => j.id === activeJobId); if(!job) return;
+        job.hoursReport = {}; document.querySelectorAll('.modal-hours-input').forEach(i => job.hoursReport[i.getAttribute('data-worker')] = parseFloat(i.value) || 0);
         job.materialsCleaned = [];
         document.querySelectorAll('.material-row-input').forEach(row => {
-            let n = row.querySelector('.mat-name').value.trim();
-            let q = parseFloat(row.querySelector('.mat-qty').value);
-            let p = parseFloat(row.querySelector('.mat-price').value);
+            let n = row.querySelector('.mat-name').value.trim(), q = parseFloat(row.querySelector('.mat-qty').value), p = parseFloat(row.querySelector('.mat-price').value);
             if(n) job.materialsCleaned.push({ qty: q||1, name: n, price: p||0 });
         });
-
-        job.completed = true;
-        renderJobs();
-        closeModal();
-        await saveCloudData();
+        job.completed = true; renderJobs(); closeModal(); await saveCloudData();
     };
 
     window.deleteJob = async function(id) {
         if(confirm("Eliminare definitivamente questo cantiere dal cloud?")) {
-            jobsList = jobsList.filter(j => j.id !== id);
-            if(editingJobId === id) cancelEdit();
-            renderJobs();
-            await saveCloudData();
+            jobsList = jobsList.filter(j => j.id !== id); if(editingJobId === id) cancelEdit();
+            renderJobs(); await saveCloudData();
         }
     };
 
     window.exportToExcel = function() {
-        const doneJobs = jobsList.filter(j => j.completed);
-        if(doneJobs.length === 0) { alert("Nessun lavoro concluso da esportare."); return; }
-
-        let excelTemplate = `
-            <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
-            <head><meta charset="UTF-8"><style>th{background-color:#107c41;color:white;font-weight:bold;}td,th{border:1px solid #ccc;padding:6px;font-family:sans-serif;}.number{text-align:right;}</style></head>
-            <body><table><thead><tr>
-                <th style="background-color:#0d47a1;color:white;">Anno</th>
-                <th style="background-color:#0d47a1;color:white;">Mese</th>
-                <th>Data Completa</th>
-                <th>Cliente / Riferimento</th>
-                <th>Indirizzo</th>
-                <th>Telefono</th>
-                <th style="background-color:#7b1fa2;color:white;">Nome Dipendente</th>
-                <th style="background-color:#7b1fa2;color:white;">Ore Lavorate</th>
-                <th>Descrizione Lavoro</th>
-                <th style="background-color:#1b5e20;color:white;">Quantità Articolo</th>
-                <th style="background-color:#1b5e20;color:white;">Descrizione Articolo Usato</th>
-                <th style="background-color:#1b5e20;color:white;">Prezzo Unitario (€)</th>
-                <th style="background-color:#1b5e20;color:white;">Totale Riga Materiale (€)</th>
-                <th>Totale Manodopera Cantiere (€)</th>
-                <th>Totale Materiali Cantiere (€)</th>
-                <th style="background-color:#e65100;color:white;">IMPORTO FATTURABILE CANTIERE (€)</th>
-            </tr></thead><tbody>`;
+        const doneJobs = jobsList.filter(j => j.completed); if(doneJobs.length === 0) { alert("Nessun lavoro concluso da esportare."); return; }
+        let excelTemplate = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="UTF-8"><style>th{background-color:#107c41;color:white;font-weight:bold;}td,th{border:1px solid #ccc;padding:6px;font-family:sans-serif;}.number{text-align:right;}</style></head><body><table><thead><tr><th style="background-color:#0d47a1;color:white;">Anno</th><th style="background-color:#0d47a1;color:white;">Mese</th><th>Data Completa</th><th>Cliente</th><th>Indirizzo</th><th>Telefono</th><th style="background-color:#7b1fa2;color:white;">Dipendente</th><th style="background-color:#7b1fa2;color:white;">Ore</th><th>Descrizione</th><th style="background-color:#1b5e20;color:white;">Q.tà</th><th style="background-color:#1b5e20;color:white;">Articolo</th><th style="background-color:#1b5e20;color:white;">Prezzo Unit.</th><th style="background-color:#1b5e20;color:white;">Tot. Riga</th><th>Tot. Manodopera</th><th>Tot. Materiali</th><th style="background-color:#e65100;color:white;">TOTALE FATTURABILE</th></tr></thead><tbody>`;
 
         doneJobs.forEach(job => {
-            const dateObj = new Date(job.date);
-            const anno = dateObj.getFullYear();
-            const mese = MONTH_NAMES[dateObj.getMonth()];
-            const dateStr = dateObj.toLocaleDateString('it-IT');
-            
-            let eco = calculateJobEconomics(job);
-
-            let workersArray = job.workers.map(w => ({ nome: w, ore: job.hoursReport[w] || 0 }));
-            if (workersArray.length === 0) {
-                workersArray.push({ nome: 'Nessuno Assegnato', ore: 0 });
-            }
-
-            let materialsArray = job.materialsCleaned && job.materialsCleaned.length > 0 ? job.materialsCleaned : [];
-            const maxRighe = Math.max(workersArray.length, materialsArray.length);
+            const d = new Date(job.date), anno = d.getFullYear(), mese = MONTH_NAMES[d.getMonth()], dateStr = d.toLocaleDateString('it-IT');
+            let eco = calculateJobEconomics(job), workersArray = job.workers.map(w => ({ nome: w, ore: job.hoursReport[w] || 0 }));
+            if (workersArray.length === 0) workersArray.push({ nome: 'Nessuno', ore: 0 });
+            let materialsArray = job.materialsCleaned || [], maxRighe = Math.max(workersArray.length, materialsArray.length);
 
             for (let i = 0; i < maxRighe; i++) {
-                const dipendente = workersArray[i] || { nome: '', ore: '' };
-                const materiale = materialsArray[i] || null;
-
+                const dip = workersArray[i] || { nome: '', ore: '' }, mat = materialsArray[i] || null;
                 excelTemplate += `<tr>
-                    <td>${i === 0 ? anno : ''}</td>
-                    <td>${i === 0 ? mese : ''}</td>
-                    <td>${i === 0 ? dateStr : ''}</td>
-                    <td>${i === 0 ? job.client : ''}</td>
-                    <td>${i === 0 ? job.address : ''}</td>
-                    <td>${i === 0 ? (job.phone || '') : ''}</td>
-                    
-                    <td>${dipendente.nome}</td>
-                    <td class="number">${dipendente.ore.toString().replace('.', ',')}</td>
-                    
-                    <td>${i === 0 ? job.desc : ''}</td>
-                    
-                    <td class="number">${materiale ? materiale.qty.toString().replace('.', ',') : ''}</td>
-                    <td>${materiale ? materiale.name : ''}</td>
-                    <td class="number">${materiale ? materiale.price.toFixed(2).replace('.', ',') : ''}</td>
-                    <td class="number">${materiale ? (materiale.qty * materiale.price).toFixed(2).replace('.', ',') : ''}</td>
-                    
-                    <td class="number">${i === 0 ? eco.laborCost.toFixed(2).replace('.', ',') : ''}</td>
-                    <td class="number">${i === 0 ? eco.materialsCost.toFixed(2).replace('.', ',') : ''}</td>
-                    <td class="number" style="font-weight:bold;">${i === 0 ? eco.totalPrice.toFixed(2).replace('.', ',') : ''}</td>
+                    <td>${i === 0 ? anno : ''}</td><td>${i === 0 ? mese : ''}</td><td>${i === 0 ? dateStr : ''}</td><td>${i === 0 ? job.client : ''}</td><td>${i === 0 ? job.address : ''}</td><td>${i === 0 ? (job.phone||'') : ''}</td>
+                    <td>${dip.nome}</td><td class="number">${dip.ore.toString().replace('.',',')}</td><td>${i === 0 ? job.desc : ''}</td>
+                    <td class="number">${mat ? mat.qty.toString().replace('.',',') : ''}</td><td>${mat ? mat.name : ''}</td><td class="number">${mat ? mat.price.toFixed(2).replace('.',',') : ''}</td><td class="number">${mat ? (mat.qty*mat.price).toFixed(2).replace('.',',') : ''}</td>
+                    <td class="number">${i === 0 ? eco.laborCost.toFixed(2).replace('.',',') : ''}</td><td class="number">${i === 0 ? eco.materialsCost.toFixed(2).replace('.',',') : ''}</td><td class="number" style="font-weight:bold;">${i === 0 ? eco.totalPrice.toFixed(2).replace('.',',') : ''}</td>
                 </tr>`;
             }
         });
-
         excelTemplate += `</tbody></table></body></html>`;
-        const blob = new Blob(['\uFEFF' + excelTemplate], { type: 'application/vnd.ms-excel;charset=utf-8;' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `registro_cantieri_avanzato_${new Date().toISOString().split('T')[0]}.xls`;
-        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['\uFEFF' + excelTemplate], { type: 'application/vnd.ms-excel;charset=utf-8;' }));
+        a.download = `registro_cantieri_${new Date().toISOString().split('T')[0]}.xls`; document.body.appendChild(a); a.click(); document.body.removeChild(a);
     };
 </script>
 </body>
